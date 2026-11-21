@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heart-classifier
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: heart-classifier
+  template:
+    metadata:
+      labels:
+        app: heart-classifier
+    spec:
+      containers:
+        - name: web
+          image: YOUR_DOCKERHUB_USERNAME/heart-classifier:latest
+          ports:
+            - containerPort: 5000
+          readinessProbe:
+            httpGet: { path: /health, port: 5000 }
+          livenessProbe:
+            httpGet: { path: /health, port: 5000 }
+          resources:
+            requests: { cpu: 100m, memory: 200Mi }
+            limits:   { cpu: 500m, memory: 400Mi }

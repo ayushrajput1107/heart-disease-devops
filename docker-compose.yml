@@ -1,0 +1,7 @@
+services:
+  web:
+    build: .
+    image: heart-classifier:local
+    ports:
+      - "80:5000"
+    restart: always

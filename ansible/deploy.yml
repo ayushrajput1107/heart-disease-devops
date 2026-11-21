@@ -1,0 +1,23 @@
+- name: Configure EC2 and deploy Heart Disease Classifier
+  hosts: webservers
+  become: true
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: true
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: true
+    - name: Run application container
+      community.docker.docker_container:
+        name: heart-classifier
+        image: YOUR_DOCKERHUB_USERNAME/heart-classifier:latest
+        pull: true
+        state: started
+        restart_policy: always
+        published_ports:
+          - "80:5000"
